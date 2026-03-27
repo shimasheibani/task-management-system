@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tms
+  template:
+    metadata:
+      labels:
+        app: tms
+    spec:
+      containers:
+        - name: tms
+          image: task-management-system:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
