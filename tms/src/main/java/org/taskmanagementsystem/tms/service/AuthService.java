@@ -2,18 +2,21 @@ package org.taskmanagementsystem.tms.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.taskmanagementsystem.tms.entities.User;
 import org.taskmanagementsystem.tms.repository.imp.UserRepository;
+import org.taskmanagementsystem.tms.security.JwtUtilis;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @AllArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final JwtUtilis jwtUtils;
 
 
     public User CreatUser(User user) {
