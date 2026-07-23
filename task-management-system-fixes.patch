@@ -1,0 +1,61 @@
+diff --git a/tms/src/main/java/org/taskmanagementsystem/tms/security/JwtUtilis.java b/tms/src/main/java/org/taskmanagementsystem/tms/security/JwtUtilis.java
+index dd04b7b..ef0b040 100644
+--- a/tms/src/main/java/org/taskmanagementsystem/tms/security/JwtUtilis.java
++++ b/tms/src/main/java/org/taskmanagementsystem/tms/security/JwtUtilis.java
+@@ -49,7 +49,7 @@ public class JwtUtilis {
+     }
+     public boolean isTokenValid(String token, UserDetails userDetails){
+         final String username= getUsernameFromToken(token);
+-        return (username.equals(userDetails.getUsername()) && isTokenexpired(token)) ;
++        return (username.equals(userDetails.getUsername()) && !isTokenexpired(token)) ;
+     }
+ 
+     public  boolean isTokenexpired(String token){
+diff --git a/tms/src/main/java/org/taskmanagementsystem/tms/service/AuthService.java b/tms/src/main/java/org/taskmanagementsystem/tms/service/AuthService.java
+index 19005c3..7686e79 100644
+--- a/tms/src/main/java/org/taskmanagementsystem/tms/service/AuthService.java
++++ b/tms/src/main/java/org/taskmanagementsystem/tms/service/AuthService.java
+@@ -2,18 +2,21 @@ package org.taskmanagementsystem.tms.service;
+ 
+ import lombok.AllArgsConstructor;
+ import org.springframework.security.crypto.password.PasswordEncoder;
++import org.springframework.stereotype.Service;
+ import org.taskmanagementsystem.tms.entities.User;
+ import org.taskmanagementsystem.tms.repository.imp.UserRepository;
++import org.taskmanagementsystem.tms.security.JwtUtilis;
+ 
+ import java.util.Date;
+ import java.util.List;
+ import java.util.Optional;
+ 
++@Service
+ @AllArgsConstructor
+ public class AuthService {
+     private final UserRepository userRepository;
+     private final PasswordEncoder passwordEncoder;
+-    private final JwtUtils jwtUtils;
++    private final JwtUtilis jwtUtils;
+ 
+ 
+     public User CreatUser(User user) {
+diff --git a/tms/src/main/resources/application.properties b/tms/src/main/resources/application.properties
+index 52c0ba2..0e3d05d 100644
+--- a/tms/src/main/resources/application.properties
++++ b/tms/src/main/resources/application.properties
+@@ -1,12 +1,12 @@
+ spring.application.name=tms
+ spring.datasource.url=jdbc:mysql://mysql:3306/tmsdb
+-spring.datasource.username=root
+-spring.datasource.password=rootpass
+-spring.datasource.driver-class-name=mysql.cj.jdbc.Driver
++spring.datasource.username=${DB_USERNAME:root}
++spring.datasource.password=${DB_PASSWORD}
++spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+ spring.jpa.hibernate.ddl-auto=update
+ spring.jpa.show-sql=true
+ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+ 
+ 
+ 
+-secretJwtString : y$R8#mQ2!vK5&zP9_wX1*bN4@tC7^jL0%fU3(hY6)aS9_mK2!vP5&zR8#wX1*bN
++secretJwtString=${JWT_SECRET}
