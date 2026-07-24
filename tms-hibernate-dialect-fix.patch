@@ -1,0 +1,35 @@
+From e413449836e37d6014493c2c73b811adc38c80ed Mon Sep 17 00:00:00 2001
+From: shima sheibani <shima.sheibani72@gmail.com>
+Date: Fri, 24 Jul 2026 10:27:48 +0200
+Subject: [PATCH] Fix context load failure: remove nonexistent MySQL8Dialect
+ reference
+
+Hibernate 7.2.7 (used by Spring Boot 4.0.5) no longer ships
+org.hibernate.dialect.MySQL8Dialect - version-specific MySQL dialects
+were consolidated into a single auto-detecting org.hibernate.dialect.MySQLDialect.
+The hardcoded reference caused ClassNotFoundException when building the
+EntityManagerFactory, failing ApplicationContext startup.
+
+Removed the explicit dialect property entirely; Hibernate auto-detects
+the correct dialect from the JDBC connection metadata, which is the
+modern recommended approach and avoids hardcoding a class name that can
+change between Hibernate versions.
+---
+ tms/src/main/resources/application.properties | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tms/src/main/resources/application.properties b/tms/src/main/resources/application.properties
+index 0e3d05d..8cc3217 100644
+--- a/tms/src/main/resources/application.properties
++++ b/tms/src/main/resources/application.properties
+@@ -5,7 +5,6 @@ spring.datasource.password=${DB_PASSWORD}
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+ spring.jpa.hibernate.ddl-auto=update
+ spring.jpa.show-sql=true
+-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+ 
+ 
+ 
+-- 
+2.34.1
+
