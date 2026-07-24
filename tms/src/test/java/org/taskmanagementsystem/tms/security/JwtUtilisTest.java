@@ -52,7 +52,7 @@ class JwtUtilisTest {
     @Test
     void generateToken_producesTokenWhoseSubjectMatchesInput() {
         String token = jwtUtilis.generateToken("shima@example.com");
-        assertEquals("shima@example.com", jwtUtilis.getUsernamFromToken(token));
+        assertEquals("shima@example.com", jwtUtilis.getUsernameFromToken(token));
     }
 
     @Test
