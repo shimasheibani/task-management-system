@@ -3,6 +3,7 @@ package org.taskmanagementsystem.tms.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.taskmanagementsystem.tms.enumUser.UserType;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "users")
+@Data
 @Getter
 @Setter
 @Builder
@@ -27,7 +29,6 @@ public class User {
     @NotEmpty
     private String email;
     @NotEmpty
-    @Column(columnDefinition = "Varchar2(255)")
     private String password;
     @Column(name = "registration_date")
     @DateTimeFormat(pattern = "dd-mm-yyyy")

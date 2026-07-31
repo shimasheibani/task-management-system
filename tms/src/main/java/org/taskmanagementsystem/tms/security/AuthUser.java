@@ -1,6 +1,7 @@
 package org.taskmanagementsystem.tms.security;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +11,9 @@ import org.taskmanagementsystem.tms.entities.User;
 import java.util.Collection;
 import java.util.List;
 
-public class UserAuth implements UserDetails {
+@Builder
+@Data
+public class AuthUser implements UserDetails {
     private User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

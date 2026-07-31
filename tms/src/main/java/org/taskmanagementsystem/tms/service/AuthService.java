@@ -1,9 +1,11 @@
 package org.taskmanagementsystem.tms.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.taskmanagementsystem.tms.entities.User;
+import org.taskmanagementsystem.tms.enumUser.UserType;
 import org.taskmanagementsystem.tms.repository.imp.UserRepository;
 import org.taskmanagementsystem.tms.security.JwtUtilis;
 
@@ -21,10 +23,22 @@ public class AuthService {
 
     public User CreatUser(User user) {
         user.set_active(true);
+        user.setUserType(UserType.JUNIOR);
         user.setRegisterDate(new Date(System.currentTimeMillis()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        return user;
+
     }
+
+    public String logIn(LoginRequestDTO loginRequestDTO){
+        User user =findUserByEmail(loginRequestDTO.getEmail()).orElseThrow(()-> new BadCredentialsException("Invalid email or password"));
+        if(!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())){
+            throw  new BadCredentialsException("Invalid email or password");
+        }
+        return jwtUtils.generateToken(user.getEmail());
+    }
+
 
     public List<User> findAllUser() {
         return userRepository.findAll();
