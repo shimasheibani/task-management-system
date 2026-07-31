@@ -1,0 +1,28 @@
+From 5c4f83a070bbc5510a9d903cdc118299cb08b1ac Mon Sep 17 00:00:00 2001
+From: shima sheibani <shima.sheibani72@gmail.com>
+Date: Fri, 24 Jul 2026 10:12:13 +0200
+Subject: [PATCH] Fix typo in JwtUtilisTest: getUsernamFromToken ->
+ getUsernameFromToken
+
+Test called a misspelled method name that doesn't exist on JwtUtilis,
+causing a test-compile failure in CI.
+---
+ .../org/taskmanagementsystem/tms/security/JwtUtilisTest.java    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tms/src/test/java/org/taskmanagementsystem/tms/security/JwtUtilisTest.java b/tms/src/test/java/org/taskmanagementsystem/tms/security/JwtUtilisTest.java
+index 218d25e..50603bc 100644
+--- a/tms/src/test/java/org/taskmanagementsystem/tms/security/JwtUtilisTest.java
++++ b/tms/src/test/java/org/taskmanagementsystem/tms/security/JwtUtilisTest.java
+@@ -52,7 +52,7 @@ class JwtUtilisTest {
+     @Test
+     void generateToken_producesTokenWhoseSubjectMatchesInput() {
+         String token = jwtUtilis.generateToken("shima@example.com");
+-        assertEquals("shima@example.com", jwtUtilis.getUsernamFromToken(token));
++        assertEquals("shima@example.com", jwtUtilis.getUsernameFromToken(token));
+     }
+ 
+     @Test
+-- 
+2.34.1
+

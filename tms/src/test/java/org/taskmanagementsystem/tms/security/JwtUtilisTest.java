@@ -1,0 +1,64 @@
+package org.taskmanagementsystem.tms.security;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Regression tests for JwtUtilis.
+ *
+ * Main bug: isTokenValid() used
+ *   username.equals(userDetails.getUsername()) && isTokenexpired(token)
+ * instead of "&& !isTokenexpired(token)", so only an ALREADY EXPIRED token
+ * with a matching username was ever treated as valid, and every genuinely
+ * valid, non-expired token was rejected.
+ */
+class JwtUtilisTest {
+
+    private JwtUtilis jwtUtilis;
+
+    @BeforeEach
+    void setUp() {
+        jwtUtilis = new JwtUtilis();
+        ReflectionTestUtils.setField(jwtUtilis, "secretJwtString", "test-secret-key-that-is-long-enough-1234567890");
+        jwtUtilis.init();
+    }
+
+    @Test
+    void isTokenValid_returnsTrue_forFreshTokenWithMatchingUsername() {
+        String token = jwtUtilis.generateToken("shima@example.com");
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("shima@example.com");
+
+        assertTrue(jwtUtilis.isTokenValid(token, userDetails),
+                "a freshly issued, non-expired token for the same user must be valid");
+    }
+
+    @Test
+    void isTokenValid_returnsFalse_whenUsernameDoesNotMatch() {
+        String token = jwtUtilis.generateToken("shima@example.com");
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("someone-else@example.com");
+
+        assertFalse(jwtUtilis.isTokenValid(token, userDetails));
+    }
+
+    @Test
+    void generateToken_producesTokenWhoseSubjectMatchesInput() {
+        String token = jwtUtilis.generateToken("shima@example.com");
+        assertEquals("shima@example.com", jwtUtilis.getUsernameFromToken(token));
+    }
+
+    @Test
+    void init_throws_whenSecretIsBlank() {
+        JwtUtilis fresh = new JwtUtilis();
+        ReflectionTestUtils.setField(fresh, "secretJwtString", "");
+        assertThrows(RuntimeException.class, fresh::init);
+    }
+}
