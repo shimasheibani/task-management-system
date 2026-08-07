@@ -7,6 +7,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.taskmanagementsystem.tms.security.FilterAuth;
 
 @Configuration
 public class SecurityConfig {
@@ -23,14 +25,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, FilterAuth filterAuth) throws Exception{
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth-> auth
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .anyRequest().authenticated()
-                        );
+                        )
+                .addFilterBefore(filterAuth, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
