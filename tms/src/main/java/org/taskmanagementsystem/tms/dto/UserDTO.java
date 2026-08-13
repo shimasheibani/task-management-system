@@ -1,16 +1,13 @@
 package org.taskmanagementsystem.tms.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.taskmanagementsystem.tms.entities.User;
-import org.taskmanagementsystem.tms.enumUser.UserType;
+import org.taskmanagementsystem.tms.enums.UserType;
 
 import java.util.Date;
 @Getter

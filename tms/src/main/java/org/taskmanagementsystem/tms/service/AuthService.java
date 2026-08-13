@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.taskmanagementsystem.tms.dto.LoginRequestDTO;
 import org.taskmanagementsystem.tms.entities.User;
-import org.taskmanagementsystem.tms.enumUser.UserType;
+import org.taskmanagementsystem.tms.enums.UserType;
 import org.taskmanagementsystem.tms.repository.imp.UserRepository;
 import org.taskmanagementsystem.tms.security.JwtUtilis;
 

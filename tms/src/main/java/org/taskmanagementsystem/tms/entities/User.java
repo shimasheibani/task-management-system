@@ -3,9 +3,8 @@ package org.taskmanagementsystem.tms.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import jakarta.validation.constraints.NotEmpty;
-import org.hibernate.Length;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.taskmanagementsystem.tms.enumUser.UserType;
+import org.taskmanagementsystem.tms.enums.UserType;
 
 
 import java.util.Date;
