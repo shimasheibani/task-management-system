@@ -1,4 +1,4 @@
-package org.taskmanagementsystem.tms.enumUser;
+package org.taskmanagementsystem.tms.enums;
 
 public enum UserType {
     ADMIN,
